@@ -1,45 +1,46 @@
-import cities from "./data.js";
+import Service from "./service.js";
 
-const handleSearch = (event) => {
+const handleSearch = async (event) => {
   event.preventDefault();
   const cityInput = document.getElementById("city-input");
   const city = cityInput.value;
   cityInput.value = "";
 
   hideCity();
-  if (city.toLowerCase() === "dublin") {
-    renderResult(showCities());
+  const cities = await Service.getCities(city);
+  if (cities.length > 0) {
+    renderResult(showCities(cities));
   } else {
     renderResult(invalidCity());
   }
 };
 
-const handleOnCityClick = (event, city) => {
+const handleOnCityClick = async (event, city, cityName) => {
   removeResult();
-  showCity(city);
+  const weatherData = await Service.getWeather(city.lon, city.lat);
+  showCity(weatherData, cityName);
 };
 
 const renderResult = (element) => {
-  const card = document.getElementById("card");
-  if (card.childElementCount === 3) {
-    card.replaceChild(
-      element,
-      document.querySelector("#card div:nth-child(2)"),
-    );
+  const resultDiv = document.getElementById("result");
+  const currentResult = resultDiv.firstChild;
+  if (currentResult) {
+    resultDiv.replaceChild(element, currentResult);
   } else {
-    card.insertBefore(element, card.lastElementChild);
+    resultDiv.appendChild(element);
   }
+  resultDiv.classList.remove("hidden");
 };
 
 const removeResult = () => {
-  const card = document.getElementById("card");
-  const listDiv = card.children[1];
-  card.removeChild(listDiv);
+  const resultDiv = document.getElementById("result");
+  resultDiv.removeChild(resultDiv.firstChild);
+  resultDiv.classList.add("hidden");
 };
 
 const hideCity = () => {
   const cityDiv = document.getElementById("city");
-  cityDiv.style.display = "none";
+  cityDiv.classList.replace("flex", "hidden");
 };
 
 const invalidCity = () => {
@@ -50,7 +51,7 @@ const invalidCity = () => {
   return div;
 };
 
-const showCity = (city) => {
+const showCity = (data, cityName) => {
   const cityDiv = document.getElementById("city");
   const icon = document.getElementById("icon");
   const temperature = document.getElementById("temperature");
@@ -60,31 +61,35 @@ const showCity = (city) => {
   const feelsLike = document.getElementById("feelslike");
   const wind = document.getElementById("wind");
 
-  icon.className = `${city.weather.toLowerCase()}`;
-  temperature.textContent = `${city.temperature} °C`;
-  weather.textContent = `${city.weather}`;
-  location.textContent = `${city.city}`;
-  humidity.textContent = `${city.humidity} %`;
-  feelsLike.textContent = `${city.feelslike} °C`;
-  wind.textContent = `${city.windspeed} km/h`;
+  const weatherCondition = data.weather[0];
+  const main = data.main;
 
-  cityDiv.style.display = "flex";
+  icon.src = `https://openweathermap.org/img/wn/${weatherCondition.icon}@2x.png`;
+  icon.alt = `${weatherCondition.description}`;
+  temperature.textContent = `${Math.round(main.temp)}°C`;
+  weather.textContent = `${weatherCondition.main}`;
+  location.textContent = `${cityName}`;
+  humidity.textContent = `${main.humidity}%`;
+  feelsLike.textContent = `${Math.round(main.feels_like)}°C`;
+  wind.textContent = `${data.wind.speed}m/s`;
+
+  cityDiv.classList.replace("hidden", "flex");
 };
 
-const showCities = () => {
+const showCities = (cities) => {
   const div = document.createElement("div");
   div.id = "city-list";
   cities.forEach((city) => {
     const cityDiv = document.createElement("div");
+    const cityName = `${city.name}${city.state ? `, ${city.state}` : ""}, ${city.country}`;
     cityDiv.className = "bar-white city";
-    cityDiv.textContent = city.city;
     cityDiv.addEventListener("click", (event) =>
-      handleOnCityClick(event, city),
+      handleOnCityClick(event, city, cityName),
     );
+    cityDiv.textContent = cityName;
+
     div.appendChild(cityDiv);
   });
-  div.firstElementChild.className = "bar-white city top-city";
-  div.lastElementChild.className = "bar-white city bottom-city";
   return div;
 };
 

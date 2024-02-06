@@ -4,49 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <script type="module" src="service.js" defer></script>
     <script type="module" src="index.js" defer></script>
-    <script type="module" src="data.js"></script>
-    <title>Document</title>
+    <title>Weather App</title>
   </head>
   <body>
     <div id="container" class="flex-column">
       <h1>Weather app</h1>
       <div id="card" class="flex-column">
         <div id="search" class="bar-white">
-          <img src="resource/search.png" />
+          <img src="resource/search.png" alt="Search" />
           <form id="city-form">
             <input id="city-input" type="text" placeholder="Enter city name" />
           </form>
         </div>
-        <div id="city" class="flex-column">
-          <div class="flex center">
-            <div id="icon" class="cyclone"></div>
+        <div id="result" class="hidden"></div>
+        <div id="city" class="hidden">
+          <div id="icon-weather" class="flex center">
+            <img src="" alt="" id="icon" />
             <div id="temp-weather" class="flex-column">
               <h3 id="temperature"></h3>
               <p id="weather"></p>
             </div>
           </div>
           <div id="location-div" class="flex center">
-            <img src="resource/location.png" />
+            <img src="resource/location.png" alt="Location" />
             <p id="location"></p>
           </div>
           <div id="other-data" class="flex">
             <div class="flex center">
-              <img src="resource/humidity.png" />
+              <img src="resource/humidity.png" alt="Humidity" />
               <div class="flex-column">
                 <p id="humidity"></p>
                 <p>Humidity</p>
               </div>
             </div>
             <div class="flex center">
-              <img src="resource/temperature.png" />
+              <img src="resource/temperature.png" alt="Feels Like" />
               <div class="flex-column">
                 <p id="feelslike"></p>
                 <p>Feels like</p>
               </div>
             </div>
             <div class="flex center">
-              <img src="resource/wind.png" />
+              <img src="resource/wind.png" alt="Wind Speed" />
               <div class="flex-column">
                 <p id="wind"></p>
                 <p>Wind speed</p>

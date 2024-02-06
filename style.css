@@ -5,16 +5,25 @@
   user-select: none;
 }
 
+:root {
+  --white: #fff;
+  --dark: #222;
+  --gradient: linear-gradient(to bottom, #9400d3, #00ffff);
+  --hoverGradient: linear-gradient(to right, #9400d3, #00ffff);
+  --red: #e71616;
+  --borderGrey: #e8e8e8;
+}
+
 #container {
   height: 100vh;
   width: 100vw;
-  background: black;
+  background: var(--dark);
 
   gap: 15vh;
   align-items: center;
   padding-top: 15vh;
 
-  color: white;
+  color: var(--white);
   font-family:
     system-ui,
     -apple-system,
@@ -30,11 +39,11 @@
 }
 
 #card {
-  background: linear-gradient(to bottom, darkviolet, aqua);
+  background: var(--gradient);
   min-width: 350px;
   padding: 10px;
   border-radius: 5px;
-  color: black;
+  color: var(--dark);
   gap: 5px;
 }
 
@@ -43,32 +52,34 @@
   cursor: pointer;
 }
 
+#city-list div:first-child {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+#city-list div:last-child {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom: none;
+}
+
 .bar-white {
-  background-color: white;
+  background-color: var(--white);
   padding: 5px 15px;
   height: 30px;
 }
 
 .city {
-  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px var(--borderGrey);
 }
 
 .city:hover {
-  background: linear-gradient(to left, darkviolet, aqua);
+  background: var(--hoverGradient);
 }
 
 .error {
-  color: red;
+  color: var(--red);
   border-radius: 5px;
-}
-
-.top-city {
-  border-radius: 5px 5px 0 0;
-}
-
-.bottom-city {
-  border-radius: 0 0 5px 5px;
-  border-bottom: none;
 }
 
 #search {
@@ -99,8 +110,8 @@ input:focus {
 }
 
 #city {
-  display: none;
-  color: white;
+  color: var(--white);
+  flex-direction: column;
   justify-content: space-around;
   gap: 30px;
   padding: 20px 15px;
@@ -128,26 +139,12 @@ input:focus {
   }
 }
 
-#icon {
-  width: 110px;
-  height: 110px;
-  background-image: url("./resource//icons.png");
+#icon-weather {
+  gap: 10px;
 }
 
-.clear {
-  background-position: -10px -10px;
-}
-.rain {
-  background-position: -410px -10px;
-}
-.snow {
-  background-position: -280px -240px;
-}
-.thunderstorm {
-  background-position: -410px -360px;
-}
-.cyclone {
-  background-position: -10px -240px;
+#icon {
+  transform: scale(1.3);
 }
 
 #other-data {
@@ -167,6 +164,10 @@ input:focus {
       font-size: 10px;
     }
   }
+}
+
+.hidden {
+  display: none;
 }
 
 .flex {
