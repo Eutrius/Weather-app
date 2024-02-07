@@ -15,7 +15,7 @@ const handleSearch = async (event) => {
   }
 };
 
-const handleOnCityClick = async (event, city, cityName) => {
+const handleOnCityClick = async (city, cityName) => {
   removeResult();
   const weatherData = await Service.getWeather(city.lon, city.lat);
   showCity(weatherData, cityName);
@@ -81,11 +81,10 @@ const showCities = (cities) => {
   div.id = "city-list";
   cities.forEach((city) => {
     const cityDiv = document.createElement("div");
-    const cityName = `${city.name}${city.state ? `, ${city.state}` : ""}, ${city.country}`;
+    const { name, state, country } = city;
+    const cityName = `${name}${state ? `, ${state}` : ""}, ${country}`;
     cityDiv.className = "bar-white city";
-    cityDiv.addEventListener("click", (event) =>
-      handleOnCityClick(event, city, cityName),
-    );
+    cityDiv.addEventListener("click", () => handleOnCityClick(city, cityName));
     cityDiv.textContent = cityName;
 
     div.appendChild(cityDiv);

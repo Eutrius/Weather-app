@@ -1,22 +1,16 @@
-const getCities = async (name) => {
-  try {
-    const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=5&appid=${API_KEY}`,
-    );
-    if (response.ok) {
-      return await response.json();
-    }
-    throw new Error("Network response was not OK");
-  } catch (error) {
-    console.error(error);
-  }
+const getCities = (cityName) => {
+  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`;
+  return fetchUrl(url);
 };
 
-const getWeather = async (lon, lat) => {
+const getWeather = (cityLon, cityLat) => {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${cityLon}&lon=${cityLat}&units=metric&appid=${API_KEY}`;
+  return fetchUrl(url);
+};
+
+const fetchUrl = async (url) => {
   try {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`,
-    );
+    const response = await fetch(url);
     if (response.ok) {
       return await response.json();
     }
